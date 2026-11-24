@@ -1,0 +1,6 @@
+{
+  "name": "LearnHub",
+  "description": "A clean, modern, and beginner-friendly educational blog platform built with Angular for reading, searching, filtering, and publishing tutorials.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

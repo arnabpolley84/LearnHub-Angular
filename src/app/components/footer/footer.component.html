@@ -1,0 +1,66 @@
+<footer class="border-t border-slate-200 bg-slate-50 text-slate-600 mt-16">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+      <!-- Brand Summary -->
+      <div class="md:col-span-5 space-y-3">
+        <a routerLink="/" class="inline-flex items-center gap-2.5 text-lg font-bold text-slate-900">
+          <span
+            class="inline-flex items-center justify-center w-7 h-7 rounded-md bg-gradient-to-br from-emerald-600 to-sky-600 text-white"
+            aria-hidden="true"
+          >
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+            </svg>
+          </span>
+          <span>LearnHub</span>
+        </a>
+        <p class="text-sm text-slate-600 max-w-sm leading-relaxed">
+          An open educational blog crafted for curious learners exploring Angular, TypeScript, modern web design, and computer science fundamentals.
+        </p>
+      </div>
+
+      <!-- Site Navigation -->
+      <div class="md:col-span-3 space-y-3">
+        <h3 class="text-sm font-semibold text-slate-900">Explore</h3>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a routerLink="/" class="hover:text-emerald-700 transition-colors">Home</a>
+          </li>
+          <li>
+            <a routerLink="/articles" class="hover:text-emerald-700 transition-colors">All Articles</a>
+          </li>
+          <li>
+            <a routerLink="/add-article" class="hover:text-emerald-700 transition-colors">Write an Article</a>
+          </li>
+          <li>
+            <a routerLink="/about" class="hover:text-emerald-700 transition-colors">About LearnHub</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Topics -->
+      <div class="md:col-span-4 space-y-3">
+        <h3 class="text-sm font-semibold text-slate-900">Topics</h3>
+        <ul class="grid grid-cols-2 gap-y-2 gap-x-4 text-sm">
+          @for (category of categories; track category) {
+            <li>
+              <a
+                [routerLink]="['/articles']"
+                [queryParams]="{ category: category }"
+                class="hover:text-sky-700 transition-colors"
+              >
+                {{ category }}
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-10 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      <p>&copy; {{ currentYear }} LearnHub Educational Blog. Built with Angular &amp; TypeScript.</p>
+      <p>Learn clearly, build steadily, share openly.</p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,206 @@
+<section class="border-b border-slate-200 bg-slate-50/70">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
+    <p class="text-xs font-semibold uppercase tracking-widest text-emerald-700">
+      Contribute to LearnHub
+    </p>
+    <h1 class="mt-2 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900">
+      Publish an Educational Article
+    </h1>
+    <p class="mt-2.5 text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl">
+      Share a clear tutorial, study note, or walkthrough. New articles are saved automatically in your browser so they stay available across refreshes.
+    </p>
+  </div>
+</section>
+
+<section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
+  <form [formGroup]="articleForm" (ngSubmit)="onSubmit()" novalidate class="space-y-8">
+    <!-- Basic Metadata Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <!-- Title -->
+      <div class="sm:col-span-2 space-y-1.5">
+        <label for="title" class="block text-sm font-semibold text-slate-900">
+          Article Title <span class="text-rose-600" aria-hidden="true">*</span>
+        </label>
+        <input
+          id="title"
+          type="text"
+          formControlName="title"
+          placeholder="e.g., Getting Started with Angular Dependency Injection"
+          [attr.aria-invalid]="hasError('title')"
+          class="w-full px-3.5 py-2.5 text-sm bg-white border rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 transition-colors"
+          [class]="hasError('title') ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-100' : 'border-slate-200 focus:border-sky-600 focus:ring-sky-100'"
+        />
+        @if (hasError('title')) {
+          <p class="text-xs font-medium text-rose-700" role="alert">
+            @if (articleForm.controls.title.errors?.['required']) {
+              Please enter an article title.
+            } @else if (articleForm.controls.title.errors?.['minlength']) {
+              Title must be at least 5 characters long.
+            } @else {
+              Title must be 120 characters or fewer.
+            }
+          </p>
+        }
+      </div>
+
+      <!-- Author -->
+      <div class="space-y-1.5">
+        <label for="author" class="block text-sm font-semibold text-slate-900">
+          Author Name <span class="text-rose-600" aria-hidden="true">*</span>
+        </label>
+        <input
+          id="author"
+          type="text"
+          formControlName="author"
+          placeholder="Your full name"
+          [attr.aria-invalid]="hasError('author')"
+          class="w-full px-3.5 py-2.5 text-sm bg-white border rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 transition-colors"
+          [class]="hasError('author') ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-100' : 'border-slate-200 focus:border-sky-600 focus:ring-sky-100'"
+        />
+        @if (hasError('author')) {
+          <p class="text-xs font-medium text-rose-700" role="alert">
+            @if (articleForm.controls.author.errors?.['required']) {
+              Please enter the author's name.
+            } @else {
+              Author name must be at least 2 characters.
+            }
+          </p>
+        }
+      </div>
+
+      <!-- Category -->
+      <div class="space-y-1.5">
+        <label for="category" class="block text-sm font-semibold text-slate-900">
+          Category <span class="text-rose-600" aria-hidden="true">*</span>
+        </label>
+        <select
+          id="category"
+          formControlName="category"
+          (change)="onCategoryChange()"
+          [attr.aria-invalid]="hasError('category')"
+          class="w-full px-3.5 py-2.5 text-sm bg-white border border-slate-200 rounded-lg text-slate-900 focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition-colors"
+        >
+          @for (cat of categories; track cat) {
+            <option [value]="cat">{{ cat }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <!-- Short Description -->
+    <div class="space-y-1.5">
+      <div class="flex items-center justify-between gap-4">
+        <label for="description" class="block text-sm font-semibold text-slate-900">
+          Short Description <span class="text-rose-600" aria-hidden="true">*</span>
+        </label>
+        <span class="text-xs font-mono tabular-nums text-slate-500">
+          {{ articleForm.controls.description.value.length }}/240
+        </span>
+      </div>
+      <textarea
+        id="description"
+        rows="2"
+        formControlName="description"
+        placeholder="Summarize what the reader will learn in 1–2 crisp sentences..."
+        [attr.aria-invalid]="hasError('description')"
+        class="w-full px-3.5 py-2.5 text-sm bg-white border rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 transition-colors resize-y"
+        [class]="hasError('description') ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-100' : 'border-slate-200 focus:border-sky-600 focus:ring-sky-100'"
+      ></textarea>
+      @if (hasError('description')) {
+        <p class="text-xs font-medium text-rose-700" role="alert">
+          @if (articleForm.controls.description.errors?.['required']) {
+            Please enter a short description for the article card.
+          } @else if (articleForm.controls.description.errors?.['minlength']) {
+            Description must be at least 20 characters long.
+          } @else {
+            Description must be 240 characters or fewer.
+          }
+        </p>
+      }
+    </div>
+
+    <!-- Cover Artwork Selection -->
+    <div class="space-y-3">
+      <label class="block text-sm font-semibold text-slate-900">
+        Cover Illustration
+      </label>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        @for (preset of coverPresets; track preset.url) {
+          <button
+            type="button"
+            (click)="selectPresetImage(preset.url)"
+            [class]="
+              articleForm.controls.imageUrl.value === preset.url
+                ? 'group text-left rounded-lg border-2 border-emerald-600 bg-emerald-50/40 overflow-hidden transition-colors'
+                : 'group text-left rounded-lg border border-slate-200 hover:border-sky-300 bg-white overflow-hidden transition-colors'
+            "
+          >
+            <div class="aspect-[16/9] bg-slate-100 overflow-hidden">
+              <img
+                [src]="preset.url"
+                [alt]="preset.label"
+                referrerPolicy="no-referrer"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="px-2.5 py-2 flex items-center justify-between gap-2">
+              <span class="text-xs font-medium text-slate-700 truncate">{{ preset.label }}</span>
+              @if (articleForm.controls.imageUrl.value === preset.url) {
+                <span class="text-[11px] font-semibold text-emerald-700 shrink-0">Selected</span>
+              }
+            </div>
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Full Article Content -->
+    <div class="space-y-1.5">
+      <label for="content" class="block text-sm font-semibold text-slate-900">
+        Article Content <span class="text-rose-600" aria-hidden="true">*</span>
+      </label>
+      <p class="text-xs text-slate-500">
+        Separate paragraphs with a blank line. Short standalone lines without trailing punctuation render as section headings.
+      </p>
+      <textarea
+        id="content"
+        rows="10"
+        formControlName="content"
+        placeholder="Write your full educational guide here..."
+        [attr.aria-invalid]="hasError('content')"
+        class="w-full px-3.5 py-3 text-sm bg-white border rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 transition-colors leading-relaxed resize-y"
+        [class]="hasError('content') ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-100' : 'border-slate-200 focus:border-sky-600 focus:ring-sky-100'"
+      ></textarea>
+      @if (hasError('content')) {
+        <p class="text-xs font-medium text-rose-700" role="alert">
+          @if (articleForm.controls.content.errors?.['required']) {
+            Please enter the main article content.
+          } @else {
+            Content should be at least 50 characters so readers get a complete explanation.
+          }
+        </p>
+      }
+    </div>
+
+    <!-- Form Actions -->
+    <div class="pt-4 border-t border-slate-200 flex flex-wrap items-center justify-between gap-4">
+      <a
+        routerLink="/articles"
+        class="inline-flex items-center px-4 py-2.5 text-sm font-medium text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 rounded-lg transition-colors"
+      >
+        Cancel
+      </a>
+
+      <button
+        type="submit"
+        class="inline-flex items-center gap-2 px-6 py-2.5 text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
+      >
+        <span>Publish Article</span>
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14" />
+          <path d="m12 5 7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+  </form>
+</section>

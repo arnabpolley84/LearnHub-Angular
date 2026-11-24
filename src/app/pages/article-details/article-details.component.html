@@ -1,0 +1,162 @@
+@if (article(); as item) {
+  <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+    <!-- Top Back & Breadcrumb Bar -->
+    <div class="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-slate-200">
+      <button
+        type="button"
+        (click)="goBack()"
+        class="inline-flex items-center gap-2 px-3.5 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 rounded-lg transition-colors whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-sky-600"
+      >
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m12 19-7-7 7-7" />
+          <path d="M19 12H5" />
+        </svg>
+        <span>Back</span>
+      </button>
+
+      <nav class="flex items-center gap-2 text-xs font-medium text-slate-500" aria-label="Breadcrumb">
+        <a routerLink="/articles" class="hover:text-sky-700 transition-colors">Articles</a>
+        <span aria-hidden="true">/</span>
+        <a
+          [routerLink]="['/articles']"
+          [queryParams]="{ category: item.category }"
+          class="text-sky-700 hover:underline"
+        >
+          {{ item.category }}
+        </a>
+      </nav>
+    </div>
+
+    <!-- Article Header -->
+    <header class="mt-8 space-y-5">
+      <div class="flex flex-wrap items-center gap-2.5 text-sm text-slate-500">
+        <span class="font-semibold text-emerald-700">{{ item.category }}</span>
+        <span aria-hidden="true">&middot;</span>
+        <span>{{ item.publishedDate | date: 'longDate' }}</span>
+        <span aria-hidden="true">&middot;</span>
+        <span class="tabular-nums">{{ item.readTimeMinutes }} min read</span>
+      </div>
+
+      <h1 class="text-3xl sm:text-4xl lg:text-[2.5rem] font-bold tracking-tight text-slate-900 leading-[1.18]">
+        {{ item.title }}
+      </h1>
+
+      <p class="text-lg text-slate-600 leading-relaxed max-w-2xl">
+        {{ item.description }}
+      </p>
+
+      <div class="pt-2 flex items-center gap-3 text-sm text-slate-700">
+        <span
+          class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-sky-100 text-sky-800 font-semibold text-xs shrink-0"
+          aria-hidden="true"
+        >
+          {{ item.author.slice(0, 2).toUpperCase() }}
+        </span>
+        <div>
+          <p class="font-semibold text-slate-900">{{ item.author }}</p>
+          <p class="text-xs text-slate-500">LearnHub Contributor</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Cover Image -->
+    <figure class="mt-8">
+      <div class="aspect-[16/9] w-full rounded-xl overflow-hidden border border-slate-200 bg-slate-100">
+        @if (!imageError()) {
+          <img
+            [src]="item.imageUrl"
+            [alt]="item.title"
+            referrerPolicy="no-referrer"
+            (error)="onImageError()"
+            class="w-full h-full object-cover"
+          />
+        } @else {
+          <div class="w-full h-full flex flex-col items-center justify-center p-8 bg-gradient-to-br from-emerald-50 to-sky-50 text-center">
+            <svg class="w-12 h-12 text-emerald-600 mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
+            </svg>
+            <p class="text-sm font-medium text-slate-700">{{ item.category }}</p>
+          </div>
+        }
+      </div>
+    </figure>
+
+    <!-- Main Article Prose -->
+    <div class="mt-10 max-w-[44rem] space-y-5 text-base sm:text-[1.0625rem] text-slate-700 leading-[1.75]">
+      @for (block of contentBlocks(); track $index) {
+        @if (block.type === 'heading') {
+          <h2 class="pt-4 text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+            {{ block.text }}
+          </h2>
+        } @else {
+          <p>{{ block.text }}</p>
+        }
+      }
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="mt-12 pt-8 border-t border-slate-200 flex flex-wrap items-center justify-between gap-4">
+      <button
+        type="button"
+        (click)="goBack()"
+        class="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 rounded-lg transition-colors"
+      >
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m12 19-7-7 7-7" />
+          <path d="M19 12H5" />
+        </svg>
+        <span>Back to Articles</span>
+      </button>
+
+      <a
+        routerLink="/add-article"
+        class="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition-colors"
+      >
+        <span>Write Your Own Guide</span>
+      </a>
+    </div>
+  </article>
+
+  <!-- Related Reading -->
+  @if (relatedArticles().length > 0) {
+    <section class="border-t border-slate-200 bg-slate-50/70">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <h2 class="text-xl font-bold text-slate-900">Continue Learning</h2>
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+          @for (related of relatedArticles(); track related.id) {
+            <a
+              [routerLink]="['/articles', related.id]"
+              class="group block p-5 rounded-xl bg-white border border-slate-200 hover:border-sky-300 transition-colors"
+            >
+              <p class="text-xs font-medium text-sky-700">
+                {{ related.category }} &middot; {{ related.readTimeMinutes }} min read
+              </p>
+              <h3 class="mt-2 text-base font-semibold text-slate-900 group-hover:text-emerald-700 transition-colors leading-snug">
+                {{ related.title }}
+              </h3>
+              <p class="mt-2 text-xs text-slate-500">
+                By {{ related.author }}
+              </p>
+            </a>
+          }
+        </div>
+      </div>
+    </section>
+  }
+} @else {
+  <!-- Article Not Found State -->
+  <section class="max-w-xl mx-auto px-4 py-20 text-center space-y-4">
+    <h1 class="text-2xl font-bold text-slate-900">Article Not Found</h1>
+    <p class="text-sm sm:text-base text-slate-600">
+      We could not find an article with that identifier. It may have been removed or the link may be incomplete.
+    </p>
+    <div class="pt-2">
+      <a
+        routerLink="/articles"
+        class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition-colors"
+      >
+        <span>Browse All Articles</span>
+      </a>
+    </div>
+  </section>
+}

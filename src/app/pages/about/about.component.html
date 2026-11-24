@@ -1,0 +1,109 @@
+<!-- Header Section -->
+<section class="border-b border-slate-200 bg-slate-50/70">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
+      <div class="lg:col-span-6 flex flex-col justify-center space-y-5">
+        <p class="text-xs font-semibold uppercase tracking-widest text-sky-700">
+          About LearnHub
+        </p>
+        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 leading-tight">
+          Clear, practical tutorials designed for steady learning.
+        </h1>
+        <p class="text-base text-slate-600 leading-relaxed">
+          LearnHub was created as a calm, distraction-free space for students, self-taught developers, and educators to read and publish accessible guides on modern web engineering.
+        </p>
+        <p class="text-base text-slate-600 leading-relaxed">
+          Whether you are writing your first Angular component, learning TypeScript interfaces, or organizing study notes on data structures, LearnHub keeps explanations focused on core concepts and real examples.
+        </p>
+      </div>
+
+      <div class="lg:col-span-6 flex">
+        <div class="w-full min-h-[260px] rounded-xl overflow-hidden border border-slate-200 bg-slate-100">
+          @if (!imageError()) {
+            <img
+              [src]="aboutImageUrl"
+              alt="Learner writing notes beside textbooks in a sunlit university library"
+              referrerPolicy="no-referrer"
+              (error)="onImageError()"
+              class="w-full h-full object-cover"
+            />
+          } @else {
+            <div class="w-full h-full flex flex-col items-center justify-center p-8 bg-gradient-to-br from-emerald-50 to-sky-50 text-center">
+              <p class="text-sm font-medium text-slate-700">LearnHub Reading Room</p>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Library Snapshot -->
+<section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pb-12 border-b border-slate-200">
+    <div class="p-6 rounded-xl border border-slate-200 bg-white">
+      <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Published Guides</p>
+      <p class="mt-2 text-3xl font-bold text-emerald-700 tabular-nums">{{ totalArticles() }}</p>
+      <p class="mt-1 text-sm text-slate-600">Curated &amp; community-written articles</p>
+    </div>
+
+    <div class="p-6 rounded-xl border border-slate-200 bg-white">
+      <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Core Subjects</p>
+      <p class="mt-2 text-3xl font-bold text-sky-700 tabular-nums">{{ categories.length }}</p>
+      <p class="mt-1 text-sm text-slate-600">Focused learning tracks to explore</p>
+    </div>
+
+    <div class="p-6 rounded-xl border border-slate-200 bg-white">
+      <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Contributing Authors</p>
+      <p class="mt-2 text-3xl font-bold text-slate-900 tabular-nums">{{ totalAuthors() }}</p>
+      <p class="mt-1 text-sm text-slate-600">Educators and learners sharing notes</p>
+    </div>
+  </div>
+
+  <!-- Three Core Principles -->
+  <div class="mt-12 space-y-6">
+    <h2 class="text-2xl font-bold text-slate-900">Our Educational Principles</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-7">
+      <div class="p-6 rounded-xl border border-slate-200 bg-white space-y-2.5">
+        <p class="text-xs font-mono font-semibold text-emerald-700">01. Clarity First</p>
+        <h3 class="text-lg font-semibold text-slate-900">Plain-Language Explanations</h3>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          Every guide introduces one idea at a time, avoiding unnecessary jargon so beginners can follow every step with confidence.
+        </p>
+      </div>
+
+      <div class="p-6 rounded-xl border border-slate-200 bg-white space-y-2.5">
+        <p class="text-xs font-mono font-semibold text-sky-700">02. Practical Structure</p>
+        <h3 class="text-lg font-semibold text-slate-900">Clean Angular Architecture</h3>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          LearnHub itself is structured as a beginner-friendly Angular project with dedicated components, typed interfaces, services, and reactive forms.
+        </p>
+      </div>
+
+      <div class="p-6 rounded-xl border border-slate-200 bg-white space-y-2.5">
+        <p class="text-xs font-mono font-semibold text-emerald-700">03. Learn by Teaching</p>
+        <h3 class="text-lg font-semibold text-slate-900">Open Local Publishing</h3>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          Anyone can draft and publish a tutorial on the Add Article page, saved locally in browser storage for immediate review and reference.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Footer -->
+  <div class="mt-12 pt-8 border-t border-slate-200 flex flex-wrap items-center gap-4">
+    <a
+      routerLink="/articles"
+      class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition-colors"
+    >
+      <span>Browse All Articles</span>
+    </a>
+    <a
+      routerLink="/add-article"
+      class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-sky-700 bg-white border border-sky-200 hover:bg-sky-50 rounded-lg transition-colors"
+    >
+      <span>Write an Article</span>
+    </a>
+  </div>
+</section>

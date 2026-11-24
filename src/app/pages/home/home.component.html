@@ -1,0 +1,190 @@
+<!-- Welcome Hero Banner -->
+<section class="border-b border-slate-200 bg-gradient-to-b from-slate-50/80 to-white">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
+      <!-- Left Editorial Introduction -->
+      <div class="lg:col-span-6 flex flex-col justify-center space-y-6">
+        <p class="text-xs font-semibold uppercase tracking-widest text-emerald-700">
+          Open Educational Publishing
+        </p>
+
+        <h1 class="text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-tight text-slate-900 leading-[1.15]">
+          Learn modern software craft, one clear guide at a time.
+        </h1>
+
+        <p class="text-base sm:text-lg text-slate-600 leading-relaxed max-w-xl">
+          LearnHub brings together beginner-friendly tutorials on Angular, TypeScript, responsive web design, and computer science—written for steady, practical understanding.
+        </p>
+
+        <div class="flex flex-wrap items-center gap-4 pt-1">
+          <a
+            routerLink="/articles"
+            class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition-colors whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
+          >
+            <span>Explore Articles</span>
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </svg>
+          </a>
+
+          <a
+            routerLink="/add-article"
+            class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-sky-700 bg-white border border-sky-200 hover:border-sky-300 hover:bg-sky-50/70 rounded-lg transition-colors whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600"
+          >
+            <span>Write a Tutorial</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Hero Visual -->
+      <div class="lg:col-span-6 flex">
+        <div class="relative w-full min-h-[260px] lg:min-h-[360px] rounded-xl overflow-hidden border border-slate-200 bg-slate-100">
+          @if (!heroImageError()) {
+            <img
+              [src]="heroImageUrl"
+              alt="Sunlit study desk with open notebook, laptop displaying modular code, and indoor plant"
+              referrerPolicy="no-referrer"
+              (error)="onHeroImageError()"
+              class="w-full h-full object-cover"
+            />
+          } @else {
+            <div class="w-full h-full flex flex-col items-center justify-center p-8 bg-gradient-to-br from-emerald-50 via-white to-sky-50 text-center">
+              <svg class="w-12 h-12 text-emerald-600 mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+              </svg>
+              <p class="text-sm font-medium text-slate-700">LearnHub Editorial Studio</p>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Topic Directory Strip -->
+    <div class="mt-10 pt-8 border-t border-slate-200 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+      @for (topic of categorySummaries(); track topic.name) {
+        <a
+          [routerLink]="['/articles']"
+          [queryParams]="{ category: topic.name }"
+          class="group flex items-center justify-between px-4 py-3 rounded-lg bg-white border border-slate-200 hover:border-sky-300 hover:bg-sky-50/30 transition-colors"
+        >
+          <span class="text-sm font-medium text-slate-800 group-hover:text-sky-800 truncate">
+            {{ topic.name }}
+          </span>
+          <span class="text-xs font-mono tabular-nums text-slate-500 ml-2 shrink-0">
+            {{ topic.count }}
+          </span>
+        </a>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Latest Educational Articles -->
+<section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-16">
+  <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-8 border-b border-slate-200">
+    <div class="space-y-1.5">
+      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
+        Latest Educational Articles
+      </h2>
+      <p class="text-sm sm:text-base text-slate-600">
+        Freshly published guides across {{ totalArticleCount() }} tutorials in our library.
+      </p>
+    </div>
+
+    <a
+      routerLink="/articles"
+      class="inline-flex items-center gap-1.5 text-sm font-semibold text-sky-700 hover:text-sky-800 transition-colors whitespace-nowrap shrink-0"
+    >
+      <span>View all articles</span>
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M5 12h14" />
+        <path d="m12 5 7 7-7 7" />
+      </svg>
+    </a>
+  </div>
+
+  <div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+    @for (article of latestArticles(); track article.id) {
+      <article class="group flex flex-col bg-white border border-slate-200 rounded-xl overflow-hidden hover:border-slate-300 transition-colors">
+        <a [routerLink]="['/articles', article.id]" class="block aspect-[4/3] overflow-hidden bg-slate-100 border-b border-slate-100">
+          @if (!failedArticleImages()[article.id]) {
+            <img
+              [src]="article.imageUrl"
+              [alt]="article.title"
+              referrerPolicy="no-referrer"
+              (error)="onArticleImageError(article.id)"
+              class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-200"
+            />
+          } @else {
+            <div class="w-full h-full flex flex-col items-center justify-center p-6 bg-gradient-to-br from-emerald-50 to-sky-50 text-center">
+              <svg class="w-9 h-9 text-sky-600 mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
+              </svg>
+              <span class="text-xs font-medium text-slate-600">{{ article.category }}</span>
+            </div>
+          }
+        </a>
+
+        <div class="flex-1 flex flex-col p-6">
+          <div class="flex items-center gap-2 text-xs font-medium text-slate-500">
+            <span [class]="getCategoryTextClass(article.category)">{{ article.category }}</span>
+            <span aria-hidden="true">&middot;</span>
+            <span class="tabular-nums">{{ article.readTimeMinutes }} min read</span>
+          </div>
+
+          <h3 class="mt-2.5 text-lg font-semibold text-slate-900 leading-snug group-hover:text-emerald-700 transition-colors">
+            <a [routerLink]="['/articles', article.id]" class="focus-visible:outline-2 focus-visible:outline-sky-600 rounded">
+              {{ article.title }}
+            </a>
+          </h3>
+
+          <p class="mt-2.5 text-sm text-slate-600 leading-relaxed flex-1">
+            {{ article.description }}
+          </p>
+
+          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-4">
+            <div class="text-xs text-slate-500 truncate">
+              <span class="font-medium text-slate-700">{{ article.author }}</span>
+              <span aria-hidden="true"> &middot; </span>
+              <span>{{ article.publishedDate | date: 'mediumDate' }}</span>
+            </div>
+
+            <a
+              [routerLink]="['/articles', article.id]"
+              class="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-600 hover:text-white rounded-lg transition-colors whitespace-nowrap shrink-0"
+            >
+              <span>Read More</span>
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </article>
+    }
+  </div>
+</section>
+
+<!-- Community Contribution Callout -->
+<section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
+  <div class="rounded-xl border border-slate-200 bg-slate-50 p-8 sm:p-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+    <div class="space-y-2 max-w-2xl">
+      <h2 class="text-xl sm:text-2xl font-bold text-slate-900">
+        Have a concept you just mastered?
+      </h2>
+      <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+        Writing a short tutorial is one of the fastest ways to cement new skills. Publish your notes on LearnHub and keep them saved in your local library.
+      </p>
+    </div>
+
+    <a
+      routerLink="/add-article"
+      class="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-sky-600 hover:bg-sky-700 rounded-lg transition-colors whitespace-nowrap shrink-0"
+    >
+      <span>Publish an Article</span>
+    </a>
+  </div>
+</section>
